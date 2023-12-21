@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,19 +19,27 @@ public class Velha {
                                                 que fica a linha 2 e a coluna 3)
                                3. A primeira pessoa a marcar 3 simbolos iguais
                                   em uma linha reta vence.""");
-        this.displayGrid();
-        this.play();
+
+        while(!this.win){
+            this.displayGrid();
+            this.play();
+            this.gridFormatter();
+            this.playerChange();
+        }
     }
 
-     private String[][] values = {
+     private String[][] plays = {
              {" ", " ", " "},
              {" ", " ", " "},
              {" ", " ", " "}
     };
 
+    private Boolean win = false;
+    private Integer[] currentPlay;
+    private Integer currentPlayer = 1;
+
 
     private void displayGrid() {
-
         String grid = """
                       
                       |     |
@@ -43,8 +52,14 @@ public class Velha {
                    %s  |  %s  |  %s
                       |     |
                 
-                """.formatted(this.values);
+                """.formatted(this.flattenMatrix(this.plays));
         System.out.println(grid);
+    }
+
+    private String[] flattenMatrix(String[][] matrix) {
+        return Arrays.stream(matrix)
+                .flatMap(Arrays::stream)
+                .toArray(String[]::new);
     }
 
     private void regexChecker(String userInput){
@@ -60,27 +75,29 @@ public class Velha {
         String cleanedUserInput = userInput.replaceAll("\\s|e","");
         String [] stringAsArray = cleanedUserInput.split("");
         for(int i = 0; i < stringAsArray.length; i++){
-            try{
-                output[i] = Integer.parseInt(stringAsArray[i]);
-            } catch (NumberFormatException ignored){}
+            output[i] = Integer.parseInt(stringAsArray[i]) - 1;// Subtraction used to keep the logic of "1 2" representing first line second column.
         }
         return output;
     }
 
 
-    private void play(){
+    private void play() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Qual é a sua jogada?");
         String userInput = scanner.nextLine();
-        regexChecker(userInput);
-        Integer[] output = this.inputToIntegerArray(userInput);
-        for(Integer integer : output) {
-            System.out.println(integer.toString());
+        this.regexChecker(userInput);
+        this.currentPlay = this.inputToIntegerArray(userInput);
+    }
+
+    private void gridFormatter(){
+            Integer[] play = this.currentPlay;
+            if(this.currentPlayer == 1){
+                this.plays[play[0]][play[1]] = "X";
+            }
+            else{this.plays[play[0]][play[1]] = "O";}
         }
 
-        //TODO: Insert here the function that converts the values of the string to ints in an array
-//        if(!userInput.equals("")){
-//            System.out.println();
-//        }
+    private void playerChange() {
+        this.currentPlayer ^= 1;
     }
 }
