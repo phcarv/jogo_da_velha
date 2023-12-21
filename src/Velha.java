@@ -23,6 +23,7 @@ public class Velha {
         while(!this.win){
             this.displayGrid();
             this.play();
+            this.checkPlayValid();
             this.gridFormatter();
             this.playerChange();
         }
@@ -38,6 +39,7 @@ public class Velha {
     private Integer[] currentPlay;
     private Integer currentPlayer = 1;
 
+    private String locationToInsert = this.plays[this.currentPlay[0]][this.currentPlay[1]];
 
     private void displayGrid() {
         String grid = """
@@ -89,19 +91,22 @@ public class Velha {
         this.currentPlay = this.inputToIntegerArray(userInput);
     }
 
+    private void checkPlayValid() {
+        if(this.locationToInsert.equals(" ")){
+            this.gridFormatter();
+        }
+        else{
+            System.out.println("Essa jogada já foi feita! Escolha outro lugar para jogar.");
+            this.play();
+        }
+    }
+
     private void gridFormatter(){
-            Integer[] play = this.currentPlay;
-            String locationInsert = this.plays[play[0]][play[1]];
-            if(locationInsert.equals(" ")){
-                if((this.currentPlayer == 1)){
-                    this.plays[play[0]][play[1]] = "X";
-                }
-                else{this.plays[play[0]][play[1]] = "O";}
+            if((this.currentPlayer == 1)){
+                this.locationToInsert = "X";
             }
-            else{
-                System.out.println("Essa jogada já foi feita! Escolha outro lugar para jogar.");
-                this.play();
-            }
+            else{this.locationToInsert = "O";}
+
         }
 
     private void playerChange() {
