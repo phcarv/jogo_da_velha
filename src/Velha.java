@@ -91,10 +91,17 @@ public class Velha {
 
     private void gridFormatter(){
             Integer[] play = this.currentPlay;
-            if(this.currentPlayer == 1){
-                this.plays[play[0]][play[1]] = "X";
+            String locationInsert = this.plays[play[0]][play[1]];
+            if(locationInsert.equals(" ")){
+                if((this.currentPlayer == 1)){
+                    this.plays[play[0]][play[1]] = "X";
+                }
+                else{this.plays[play[0]][play[1]] = "O";}
             }
-            else{this.plays[play[0]][play[1]] = "O";}
+            else{
+                System.out.println("Essa jogada já foi feita! Escolha outro lugar para jogar.");
+                this.play();
+            }
         }
 
     private void playerChange() {
