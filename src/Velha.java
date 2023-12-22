@@ -24,7 +24,6 @@ public class Velha {
             this.displayGrid();
             this.play();
             this.checkPlayValid();
-            this.gridFormatter();
             this.playerChange();
         }
     }
@@ -39,7 +38,6 @@ public class Velha {
     private Integer[] currentPlay;
     private Integer currentPlayer = 1;
 
-    private String locationToInsert = this.plays[this.currentPlay[0]][this.currentPlay[1]];
 
     private void displayGrid() {
         String grid = """
@@ -92,7 +90,7 @@ public class Velha {
     }
 
     private void checkPlayValid() {
-        if(this.locationToInsert.equals(" ")){
+        if(this.plays[this.currentPlay[0]][this.currentPlay[1]].equals(" ")){
             this.gridFormatter();
         }
         else{
@@ -101,13 +99,10 @@ public class Velha {
         }
     }
 
-    private void gridFormatter(){
-            if((this.currentPlayer == 1)){
-                this.locationToInsert = "X";
-            }
-            else{this.locationToInsert = "O";}
+    private void gridFormatter() {
+        plays[currentPlay[0]][currentPlay[1]] = (currentPlayer == 1) ? "X" : "O";
+    }
 
-        }
 
     private void playerChange() {
         this.currentPlayer ^= 1;
