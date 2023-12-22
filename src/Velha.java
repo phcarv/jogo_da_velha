@@ -35,6 +35,8 @@ public class Velha {
     private Integer[] currentPlay;
     private Integer currentPlayer = 1;
 
+    private String typedPlay;
+
 
     private void displayGrid() {
         String grid = """
@@ -59,15 +61,24 @@ public class Velha {
                 .toArray(String[]::new);
     }
 
-    private void regexChecker(String userInput){
+    private String playGetter(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Qual é a sua jogada?");
+        return scanner.nextLine();
+
+    }
+
+    private void playChecker(){
+        this.typedPlay = this.playGetter();
         Pattern pattern = Pattern.compile("[1-3]{2}|[1-3] [1-3]|[1-3]e[1-3]");
-        Matcher matcher = pattern.matcher(userInput);
-        if(!matcher.matches()){
+        Matcher matcher = pattern.matcher(this.typedPlay);
+        while(!matcher.matches()){
             System.out.println("Essa entrada não é valida, tente algo como '12' ou '2 3' ou '3e1'.");
+            this.playChecker();
         }
     }
 
-    private Integer[] inputToIntegerArray(String userInput){
+    private Integer[] playFormatter(String userInput){
         Integer[] output = new Integer[2];
         String cleanedUserInput = userInput.replaceAll("\\s|e","");
         String [] stringAsArray = cleanedUserInput.split("");
@@ -79,16 +90,6 @@ public class Velha {
         return output;
     }
 
-
-    private Boolean play() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Qual é a sua jogada?");
-        String userInput = scanner.nextLine();
-        this.regexChecker(userInput);
-        this.currentPlay = this.inputToIntegerArray(userInput);
-        return this.playValid();
-
-    }
 
     private Boolean playValid() {
         if(this.plays[this.currentPlay[0]][this.currentPlay[1]].equals(" ")){
@@ -112,9 +113,11 @@ public class Velha {
 
     public void game(){
         this.displayGrid();
-        Boolean isValid = this.play();
+        Boolean isValid = false;
         while(!isValid){
-            isValid = this.play();
+            this.playChecker();
+            this.currentPlay = this.playFormatter(this.typedPlay);
+            isValid = this.playValid();
         }
         this.playerChange();
     }
