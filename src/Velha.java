@@ -21,10 +21,7 @@ public class Velha {
                                   em uma linha reta vence.""");
 
         while(!this.win){
-            this.displayGrid();
-            this.play();
-            this.checkPlayValid();
-            this.playerChange();
+            this.game();
         }
     }
 
@@ -75,27 +72,32 @@ public class Velha {
         String cleanedUserInput = userInput.replaceAll("\\s|e","");
         String [] stringAsArray = cleanedUserInput.split("");
         for(int i = 0; i < stringAsArray.length; i++){
-            output[i] = Integer.parseInt(stringAsArray[i]) - 1;// Subtraction used to keep the logic of "1 2" representing first line second column.
+            try{
+                output[i] = Integer.parseInt(stringAsArray[i]) - 1;// Subtraction used to keep the logic of "1 2" representing first line second column.
+            } catch (NumberFormatException ignored){}
         }
         return output;
     }
 
 
-    private void play() {
+    private Boolean play() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Qual é a sua jogada?");
         String userInput = scanner.nextLine();
         this.regexChecker(userInput);
         this.currentPlay = this.inputToIntegerArray(userInput);
+        return this.playValid();
+
     }
 
-    private void checkPlayValid() {
+    private Boolean playValid() {
         if(this.plays[this.currentPlay[0]][this.currentPlay[1]].equals(" ")){
             this.gridFormatter();
+            return true;
         }
         else{
             System.out.println("Essa jogada já foi feita! Escolha outro lugar para jogar.");
-            this.play();
+            return false;
         }
     }
 
@@ -106,5 +108,14 @@ public class Velha {
 
     private void playerChange() {
         this.currentPlayer ^= 1;
+    }
+
+    public void game(){
+        this.displayGrid();
+        Boolean isValid = this.play();
+        while(!isValid){
+            isValid = this.play();
+        }
+        this.playerChange();
     }
 }
