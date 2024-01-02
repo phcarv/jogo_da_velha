@@ -31,6 +31,17 @@ public class Velha {
              {" ", " ", " "}
     };
 
+//    private void checkWin(){
+//        for(int i = 0; i < 3; i++){
+//            for(int j = 0; j < 3; j++){
+//                if(this.plays[i][j]){
+//
+//                }
+//            }
+//        }
+//
+//    }
+
     private Boolean win = false;
     private Integer[] currentPlay;
     private Integer currentPlayer = 1;
