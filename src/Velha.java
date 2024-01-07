@@ -25,16 +25,6 @@ public class Velha {
                 {" ", " ", " "},
                 {" ", " ", " "}};
 
-        this.p11 = this.board[0][0];
-        this.p12 = this.board[0][1];
-        this.p13 = this.board[0][2];
-        this.p21 = this.board[1][0];
-        this.p22 = this.board[1][1];
-        this.p23 = this.board[1][2];
-        this.p31 = this.board[2][0];
-        this.p32 = this.board[2][1];
-        this.p33 = this.board[2][2];
-
         while(!this.win){
             this.game();
         }
@@ -53,16 +43,18 @@ public class Velha {
     private String p32;
     private String p33;
 
-//    private void checkWin(){
-//        for(int i = 0; i < 3; i++){
-//            for(int j = 0; j < 3; j++){
-//                if(this.plays[i][j]){
-//
-//                }
-//            }
-//        }
-//
-//    }
+    private void valuesUpdater(){
+        this.p11 = this.board[0][0];
+        this.p12 = this.board[0][1];
+        this.p13 = this.board[0][2];
+        this.p21 = this.board[1][0];
+        this.p22 = this.board[1][1];
+        this.p23 = this.board[1][2];
+        this.p31 = this.board[2][0];
+        this.p32 = this.board[2][1];
+        this.p33 = this.board[2][2];
+    }
+
 
     private Boolean win = false;
     private Integer[] currentPlay;
@@ -151,7 +143,7 @@ public class Velha {
         else if(!this.p21.equals(" ") & this.p21.equals(this.p22) & this.p22.equals(this.p23)){
             return true;
         }
-        else if(!this.p11.equals(" ") & this.p31.equals(this.p32) & this.p32.equals(this.p33)){
+        else if(!this.p31.equals(" ") & this.p31.equals(this.p32) & this.p32.equals(this.p33)){
             return true;
         }
         else if(!this.p11.equals(" ") & this.p11.equals(this.p21) & this.p21.equals(this.p31)){
@@ -182,6 +174,7 @@ public class Velha {
             this.currentPlay = this.playFormatter(this.typedPlay);
             isValid = this.playValid();
         }
+        this.valuesUpdater();
         this.win = this.checkWin();
         this.playerChange();
     }
